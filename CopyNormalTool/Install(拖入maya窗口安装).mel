@@ -1,0 +1,61 @@
+MainInstallUI;
+
+string $shelname = "CopyNormal";
+
+global proc InstallshelfTab()
+{
+    string $cmd = "import maya.cmds as cmds;import os;scriptPath = os.environ['MAYA_SCRIPT_PATH'];path = scriptPath.split(';');readData = open(path[2]+'/CopyNormalTool/CopyNormalTool.py','r+');readJson = readData.read();readData.close();readJson";
+    string $pyScripts = python($cmd);
+    global string $shelname;
+
+    //判断工具架是否存在
+    int $shelfExists = `layout -q -ex $shelname`;
+    if ($shelfExists == 1)
+    {
+         deleteUI -layout $shelname;
+    }
+    addNewShelfTab $shelname;
+    
+    $ScriptsStr = "" ;
+    //注意,脚本名和工具架不可重名
+    scriptToShelf("CopyNormalTool",$pyScripts, false);
+    print("Install OK !");
+}
+
+global proc DeleteShelfTab()
+{
+    global string $shelname;
+    int $shelfExists = `layout -q -ex $shelname`;
+    if ($shelfExists == 1)
+    {
+         deleteUI -layout $shelname;
+         print("Delete CopyNormalTool ShelTab OK !");
+    }
+    else
+    {
+        print("Not CopyNormalTool ShelTab !");
+    }
+}
+
+
+
+global proc MainInstallUI() 
+{ 
+   if(`window -ex CopyNormalTool`)
+   { 
+     deleteUI CopyNormalTool; 
+   }
+
+window -t "Install" CopyNormalTool; 
+columnLayout -adj 1;
+frameLayout -label "" -w 200; 
+button -l "Install Tool" -c "InstallshelfTab"  -h 50 -w 100 -bgc 0.0 0.4 0.0  -al center;
+
+frameLayout -label "" -w 100 -h 100; 
+button -l "Delete Tool" -c "DeleteShelfTab;"  -h 50 -w 150 -bgc 0.5 0.0 0.0  -al left;
+
+//frameLayout -label "" -w 200 -h 10; 
+text -l "Versions 1.0"-align "center"; 
+
+showWindow CopyNormalTool; 
+} 
