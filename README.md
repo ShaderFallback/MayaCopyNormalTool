@@ -14,3 +14,4 @@ C:\Users\youName\Documents\maya\scripts
 2.将Install.mel 拖进maya 窗口安装
 Install.mel 
 
+ ![image](https://github.com/ShaderFallback/MayaCopyNormalTool/blob/main/CopyNormalTool.png)
